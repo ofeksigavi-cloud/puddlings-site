@@ -1,0 +1,217 @@
+/* Puddlings site. One shared stylesheet, no build step.
+   Colours are variables so dark mode only redefines them. */
+
+@font-face {
+  font-family: "Tiny5";
+  src: url("assets/fonts/Tiny5-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f1f7fb;
+  --surface: #ffffff;
+  --ink: #17283a;
+  --muted: #4a5d70;
+  --accent: #1f6fb5;       /* water blue; white text on it passes AA */
+  --accent-ink: #ffffff;
+  --line: #17283a;
+  --shadow: #b9d3e6;
+  --focus: #b5470a;
+  --radius: 6px;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-pixel: "Tiny5", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1a29;
+    --surface: #16273b;
+    --ink: #e8f1f8;
+    --muted: #a9bccd;
+    --accent: #7cc0f2;
+    --accent-ink: #0e1a29;
+    --line: #7cc0f2;
+    --shadow: #05101c;
+    --focus: #ffb86b;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.wrap {
+  width: min(100% - 2rem, 62rem);
+  margin-inline: auto;
+}
+
+.narrow { width: min(100% - 2rem, 42rem); margin-inline: auto; }
+
+h1, h2, h3 {
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.6em;
+}
+h1 { font-size: clamp(2.4rem, 9vw, 4rem); }
+h2 { font-size: clamp(1.7rem, 5vw, 2.3rem); margin-top: 0; }
+h3 { font-size: 1.35rem; }
+
+p { margin: 0 0 1em; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 34rem; }
+
+a { color: var(--accent); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute; left: 1rem; top: -4rem;
+  background: var(--surface); color: var(--ink);
+  padding: 0.75rem 1rem; border: 2px solid var(--line); z-index: 10;
+}
+.skip:focus { top: 1rem; }
+
+/* Header and footer */
+.site-header { padding: 0.75rem 0; }
+.site-header .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  min-height: 44px;
+  font-family: var(--font-pixel); font-size: 1.6rem;
+  color: var(--ink); text-decoration: none;
+}
+.brand img { width: 40px; height: 40px; image-rendering: pixelated; }
+
+nav ul { list-style: none; display: flex; gap: 0.25rem; margin: 0; padding: 0; }
+nav a {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: 0 0.75rem;
+  color: var(--ink); text-decoration: none; font-weight: 600;
+}
+nav a:hover, nav a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; }
+
+.site-footer {
+  margin-top: 5rem; padding: 2.5rem 0 3rem;
+  border-top: 2px solid var(--line);
+  color: var(--muted); font-size: 0.95rem;
+}
+.site-footer ul { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0 1rem; }
+.site-footer li a { display: inline-flex; align-items: center; min-height: 44px; }
+.site-footer p { margin-bottom: 0.6rem; max-width: 40rem; }
+
+/* Hero */
+.hero { padding: 2.5rem 0 1rem; }
+.hero-grid { display: grid; gap: 2.5rem; align-items: center; grid-template-columns: minmax(0, 1fr); }
+.hero-grid > * { min-width: 0; }
+@media (min-width: 52rem) { .hero-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); } }
+
+.stage {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 6px 6px 0 var(--shadow);
+  padding: 1.5rem 1rem 1rem;
+  display: flex; justify-content: center; align-items: flex-end; gap: 1rem;
+  min-height: 15rem;
+}
+/* Pets are 64px sprites drawn at whole multiples only: never smoothed. */
+.px { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+.px.s1 { width: 64px; height: 64px; }
+.px.s2 { width: 128px; height: 128px; }
+.px.s3 { width: 192px; height: 192px; }
+.bob { animation: bob 2.4s steps(2, jump-none) infinite; }
+@keyframes bob { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+
+/* Store badge placeholder: clearly not a link, because the app is not out yet */
+.badge {
+  display: inline-flex; flex-direction: column; justify-content: center;
+  min-height: 56px; padding: 0.4rem 1.25rem;
+  background: var(--surface); color: var(--ink);
+  border: 2px dashed var(--line); border-radius: var(--radius);
+  line-height: 1.25;
+}
+.badge small { color: var(--muted); font-size: 0.8rem; }
+.badge strong { font-family: var(--font-pixel); font-weight: 400; font-size: 1.25rem; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 1.25rem;
+  background: var(--accent); color: var(--accent-ink);
+  border: 2px solid var(--line); border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--shadow);
+  font-weight: 700; text-decoration: none;
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--shadow); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+
+/* Sections */
+section { padding: 3rem 0 0; }
+
+.steps { display: grid; gap: 1.25rem; list-style: none; padding: 0; margin: 1.5rem 0 0; }
+@media (min-width: 40rem) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.card {
+  background: var(--surface); border: 2px solid var(--line);
+  border-radius: var(--radius); box-shadow: 5px 5px 0 var(--shadow);
+  padding: 1.25rem;
+}
+.card h3 { margin-bottom: 0.4em; }
+.card p:last-child { margin-bottom: 0; }
+
+.pets { display: grid; gap: 1.25rem; grid-template-columns: repeat(2, 1fr); list-style: none; padding: 0; margin: 1.5rem 0 0; }
+@media (min-width: 40rem) { .pets { grid-template-columns: repeat(4, 1fr); } }
+.pet { text-align: center; padding: 1rem 0.5rem; }
+.pet .px { margin: 0 auto 0.5rem; }
+.pet strong { font-family: var(--font-pixel); font-weight: 400; font-size: 1.4rem; display: block; }
+.pet span { color: var(--muted); font-size: 0.95rem; }
+
+.where { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+@media (min-width: 40rem) { .where { grid-template-columns: repeat(2, 1fr); } }
+
+/* Prose pages (privacy, support, 404) */
+.page { padding: 2rem 0 0; }
+.page h1 { font-size: clamp(2rem, 7vw, 3rem); }
+.page h2 { font-size: 1.6rem; margin-top: 2.5rem; }
+.page ul { padding-left: 1.25rem; }
+.page li { margin-bottom: 0.4rem; }
+.meta { color: var(--muted); }
+
+details {
+  background: var(--surface); border: 2px solid var(--line);
+  border-radius: var(--radius); margin-bottom: 1rem;
+}
+summary {
+  cursor: pointer; min-height: 44px; padding: 0.6rem 1rem;
+  display: flex; align-items: center;
+  font-weight: 700;
+}
+details[open] summary { border-bottom: 2px solid var(--line); }
+details > :not(summary) { margin: 1rem 1rem 0; }
+details > :last-child { margin-bottom: 1rem; }
+
+.center { text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bob { animation: none; }
+  .btn:hover { transform: none; }
+  * { scroll-behavior: auto !important; }
+}
